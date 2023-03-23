@@ -88,9 +88,11 @@ class ModuloNode(BinaryOperatorNode):
 
     def accept(self, visitor):
         visitor.visit_Modulo(self)
-
-    def __eq__(self, other):
-        return self.__class__ == other.__class__ and self.leftNode == other.leftNode and self.symbol == other.symbol and self.rightNode == other.rightNode
+    
+    def eval(self):
+        return self.leftNode.eval() % self.rightNode.eval()
+    # def __eq__(self, other):
+    #     return self.__class__ == other.__class__ and self.leftNode == other.leftNode and self.symbol == other.symbol and self.rightNode == other.rightNode
 ##########################################################################
 
 # Operador suma
