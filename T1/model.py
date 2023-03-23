@@ -121,12 +121,12 @@ class SubtractionNode(BinaryOperatorNode):
 class Visitor:
     # Los nodos compuestos deben propagar la visita a los subnodos
     def visit_Addition(self, node):
-        node.leftNode.accept(self)
         node.rightNode.accept(self)
+        node.leftNode.accept(self)
 
     def visit_Subtract(self, node):
-        node.leftNode.accept(self)
         node.rightNode.accept(self)
+        node.leftNode.accept(self)
 
     def visit_Modulo(self, node):
         node.leftNode.accept(self)
@@ -135,24 +135,11 @@ class Visitor:
     def visit_Number(self, node):
         pass
 
-##########################################################################
-class ModuloOperatorCounter(Visitor):
-    def __init__(self):
-        self.total = 0
+    def visit_MinusMinus(self, node):
+        node.node.accept(self)
 
-    def visit_Addition(self, node):
-        node.leftNode.accept(self)
-        node.rightNode.accept(self)
-        self.total = self.total + 1
-
-    def visit_Subtract(self, node):
-        node.leftNode.accept(self)
-        node.rightNode.accept(self)
-        self.total = self.total + 1
-
-    def visit_Number(self, node):
-        pass
-##########################################################################
+    def visit_PlusPlus(self, node):
+        node.node.accept(self)
 
 ##########################################################################
 class UnaryOperatorNode(OperatorNode):
@@ -163,11 +150,11 @@ class UnaryOperatorNode(OperatorNode):
     def to_string(self):
         return "(" + self.symbol + " " + self.node.to_string() + ")"
 
-    def accept(self, visitor):
-        visitor.visit_UnaryOperator(self)
-
     def __eq__(self, other):
         return self.__class__ == other.__class__ and self.node == other.node and self.symbol == other.symbol
+
+    def eval(self):
+        pass
 ##########################################################################
 
 ##########################################################################
@@ -175,14 +162,17 @@ class PlusPlusNode(UnaryOperatorNode):
     def __init__(self, node):
         super().__init__(node, "++")
 
-    def to_string(self):
-        return "(" + self.symbol + " " + self.node.to_string() + ")"
+    # def to_string(self):
+    #     return "(" + self.symbol + " " + self.node.to_string() + ")"
 
     def accept(self, visitor):
         visitor.visit_PlusPlus(self)
 
-    def __eq__(self, other):
-        return self.__class__ == other.__class__ and self.node == other.node and self.symbol == other.symbol
+    def eval(self):
+        return self.node.eval() + 1
+
+    # def __eq__(self, other):
+    #     return self.__class__ == other.__class__ and self.node == other.node and self.symbol == other.symbol
 ##########################################################################
 
 ##########################################################################
@@ -190,29 +180,15 @@ class MinusMinusNode(UnaryOperatorNode):
     def __init__(self, node):
         super().__init__(node, "--")
 
-    def to_string(self):
-        return "(" + self.symbol + " " + self.node.to_string() + ")"
+    # def to_string(self):
+    #     return "(" + self.symbol + " " + self.node.to_string() + ")"
 
     def accept(self, visitor):
         visitor.visit_MinusMinus(self)
 
-    def __eq__(self, other):
-        return self.__class__ == other.__class__ and self.node == other.node and self.symbol == other.symbol
-##########################################################################
+    # def __eq__(self, other):
+    #     return self.__class__ == other.__class__ and self.node == other.node and self.symbol == other.symbol
 
-##########################################################################
-class UnaryOperatorCounter(Visitor):
-    def __init__(self):
-        self.total = 0
-
-    def visit_PlusPlus(self, node):
-        node.node.accept(self)
-        self.total = self.total + 1
-
-    def visit_MinusMinus(self, node):
-        node.node.accept(self)
-        self.total = self.total + 1
-
-    def visit_Number(self, node):
-        pass
+    def eval(self):
+        return self.node.eval()-1
 ##########################################################################

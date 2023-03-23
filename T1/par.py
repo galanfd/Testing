@@ -10,8 +10,10 @@ def parser(stringCode):
     else:
         raise Exception("Expression " , stringCode, " not supported.")
 
+
 def isNumber(string):
     return string.isnumeric()
+
 
 def isOperation(string):
     res = False
@@ -39,8 +41,10 @@ def operation(string):
         return PlusPlusNode(parser(tokens[0]))
     elif operator == "--":
         return MinusMinusNode(parser(tokens[0]))
-    elif operator == "(":
-        return parser(tokens[0])
+    
+
+
+
 
 def splitArgs(string):
     open_counter = 0
