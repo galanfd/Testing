@@ -53,13 +53,7 @@ class ModuloOperatorCounter(Visitor):
     def total(self):
         return self.count
 
-    def visit_Addition(self, node):
+    def visit_Modulo(self, node):
         self.count = self.count + 1
-        node.leftNode.accept(self)
-        node.rightNode.accept(self)
-
-    def visit_Subtract(self, node):
-        self.count = self.count + 1
-        node.leftNode.accept(self)
-        node.rightNode.accept(self)
+        super().visit_Modulo(node)
 ##########################################################################
