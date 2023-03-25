@@ -53,3 +53,4 @@ def splitArgs(string):
     # adding last arg
     result.append(temp.strip())
     return result
+#el result[0] es el operador y result[1] y result[2] son los argumentos

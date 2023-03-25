@@ -1,6 +1,6 @@
 import unittest
 from model import *
-from par import *
+from parser import *
 from metrics import *
 
 
@@ -101,6 +101,10 @@ class TestParser(unittest.TestCase):
         ast.accept(visitor)
         self.assertEqual(visitor.total(), 1)
         print("\n Testeando: (++ 1)")
+
+    #Tests propios
+
+    
 
 
 if __name__ == '__main__':

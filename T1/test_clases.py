@@ -1,6 +1,6 @@
 import unittest
 from model import *
-from par import *
+from parser import *
 from metrics import *
 
 
