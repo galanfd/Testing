@@ -47,6 +47,11 @@ class TestWarnings(unittest.TestCase):
         Warning('VariableLongName', 13, 'variable completeHomeAddress has a long name')]
         print("result: ", result)
 
+        # print("-----------------------------LONGVARIABLENAME----------------------------------")
+        # print((result))
+        # print((expectedWarnings))
+        # print("--------------------------------------------------------------------------------")
+
         self.assertEqual(result, expectedWarnings)
 
     """ Nombre: test_unused_argument
@@ -114,11 +119,14 @@ class TestWarnings(unittest.TestCase):
         tree = command.apply(tree)
 
         expectedCode = self.get_ast_from_file('expected-code/code-minus-equal.py')
-        print("_------------------------------------------------------")
-        print(dump(tree, indent=4))
-        print("_------------------------------------------------------")
-        print(dump(expectedCode, indent=4))
-        print("_------------------------------------------------------")
+        # print("TEST MINUS EQUAL REWRITER")
+        # print("_------------------------------------------------------")
+        # print(dump(tree, indent=4))
+        # print(unparse(tree))
+        # print("_------------------------------------------------------")
+        # print(dump(expectedCode, indent=4))
+        # print(unparse(expectedCode))
+        # print("_------------------------------------------------------")
         self.assertEqual(dump(tree), dump(expectedCode))
 
 
@@ -138,7 +146,14 @@ class TestWarnings(unittest.TestCase):
         tree = command.apply(tree)
 
         expectedCode = self.get_ast_from_file('expected-code/code-simplified-if.py')
-        
+        # print("TEST SIMPLIFIED IF")
+        # print("_------------------------------------------------------")
+        # print(dump(tree, indent=4))
+        # print(unparse(tree))
+        # print("_------------------------------------------------------")
+        # print(dump(expectedCode, indent=4))
+        # print(unparse(expectedCode))
+        # print("_------------------------------------------------------")
         self.assertEqual(dump(tree), dump(expectedCode))
 
 
