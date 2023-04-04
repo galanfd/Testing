@@ -40,3 +40,10 @@ class UncoupledMethodRule(Rule):
         visitor = UncoupledMethodVisitor()
         visitor.visit(ast)
         return visitor.warningsList()
+    
+
+# class SuperInitNotCalledRule(Rule):
+#     def analyze(self, ast):
+#         visitor = UncoupledMethodVisitor()
+#         visitor.visit(ast)
+#         return visitor.warningsList()

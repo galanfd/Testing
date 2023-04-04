@@ -36,3 +36,10 @@ class UninitializedAttributeRule(Rule):
         visitor = AttributeUsageVisitor()
         visitor.visit(ast)
         return visitor.warningsList()
+
+# class UnusedArgumentRule(Rule):
+
+#     def analyze(self, ast):
+#         visitor = AttributeUsageVisitor()
+#         visitor.visit(ast)
+#         return visitor.warningsList()

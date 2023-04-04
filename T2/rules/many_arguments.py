@@ -32,3 +32,11 @@ class ManyArgumentsRule(Rule):
         visitor = ManyArgumentsVisitor()
         visitor.visit(ast)
         return visitor.warningsList()
+
+
+# class LongVariableNameRule(Rule):
+
+#     def analyze(self, ast):
+#         visitor = ManyArgumentsVisitor()
+#         visitor.visit(ast)
+#         return visitor.warningsList()
