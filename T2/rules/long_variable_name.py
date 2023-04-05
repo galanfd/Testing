@@ -8,6 +8,7 @@ class VarVisitor(WarningNodeVisitor):
     def visit_FunctionDef(self, node: FunctionDef):
         for arg in node.args.args:
             if len(arg.arg) > 15:
+                # print('VariableLongName', node.lineno, 'variable '+ arg.arg + ' has a long name')
                 self.addWarning('VariableLongName', node.lineno, 'variable '+ arg.arg + ' has a long name')
 
         NodeVisitor.generic_visit(self, node)
@@ -17,10 +18,12 @@ class VarVisitor(WarningNodeVisitor):
 
         if isinstance(var, Name):
             if len(var.id) > 15:
+                # print('VariableLongName', node.lineno, 'variable '+ var.id + ' has a long name')
                 self.addWarning('VariableLongName', var.lineno, 'variable '+ var.id + ' has a long name')
 
         if isinstance(var, Attribute):
             if len(var.attr) > 15:
+                # print('VariableLongName', node.lineno, 'variable '+ var.attr + ' has a long name')
                 self.addWarning('VariableLongName', var.lineno, 'variable '+ var.attr + ' has a long name')
 
         NodeVisitor.generic_visit(self, node)

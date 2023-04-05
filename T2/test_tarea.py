@@ -146,14 +146,14 @@ class TestWarnings(unittest.TestCase):
         tree = command.apply(tree)
 
         expectedCode = self.get_ast_from_file('expected-code/code-simplified-if.py')
-        print("TEST MINUS EQUAL REWRITER")
-        print("_------------------------------------------------------")
-        # print(dump(tree, indent=4))
-        print(unparse(tree))
-        print("_------------------------------------------------------")
-        # print(dump(expectedCode, indent=4))
-        print(unparse(expectedCode))
-        print("_------------------------------------------------------")
+        # print("TEST MINUS EQUAL REWRITER")
+        # print("_------------------------------------------------------")
+        # # print(dump(tree, indent=4))
+        # print(unparse(tree))
+        # print("_------------------------------------------------------")
+        # # print(dump(expectedCode, indent=4))
+        # print(unparse(expectedCode))
+        # print("_------------------------------------------------------")
         self.assertEqual(dump(tree), dump(expectedCode))
 
 

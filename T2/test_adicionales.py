@@ -28,9 +28,16 @@ class TestWarnings(unittest.TestCase):
     """ Nombre: test_long_variable_name
         Codigo a ser analizado: extra-test-code/longVariableName.py
         Descripcion: Test para evaluar LongVariableNameRule considerando los siguientes escenarios:
-        - Linea <numero-linea> : <Descripcion de codigo - caso a considerar>
+        - Linea 1 : variable entregada a funcion con mas de 15 caracteres
+        - Linea 2 : variable de funcion con mas de 15 caracteres definida dentro de funcion
+        - Linea 17 : variable de instancia con mas de 15 caracteres declarada en un método
+        - Linea 19 : variable global fuera de cualquier scope con mas de 15 caracteres 
         
-        Resultado esperado (Una lista de warnings): .....
+        Resultado esperado (Una lista de warnings): [
+        Warning('VariableLongName', 1, 'variable caso2conmasde15caracteresendefinicion has a long name'),
+        Warning('VariableLongName', 2, 'variable probandomasde15caracteresenvariable has a long name'),
+        Warning('VariableLongName', 17, 'variable perroladrarguaucon15caracteres has a long name'),
+        Warning('VariableLongName', 19, 'variable variableglobalconmasde15caracteres has a long name')]
     """
 
     def test_long_variable_name(self):
@@ -41,7 +48,16 @@ class TestWarnings(unittest.TestCase):
 
 
         # Actualice el valor de expectedWarnings de acuerdo a su caso de prueba propuesto
-        expectedWarnings = []
+        expectedWarnings = [
+        Warning('VariableLongName', 1, 'variable caso2conmasde15caracteresendefinicion has a long name'),
+        Warning('VariableLongName', 2, 'variable probandomasde15caracteresenvariable has a long name'),
+        Warning('VariableLongName', 17, 'variable perroladrarguaucon15caracteres has a long name'),
+        Warning('VariableLongName', 19, 'variable variableglobalconmasde15caracteres has a long name')]
+
+        # print("-----------------------------LONGVARIABLENAME----------------------------------")
+        # print((result))
+        # print((expectedWarnings))
+        # print("--------------------------------------------------------------------------------")
 
         self.assertEqual(result, expectedWarnings)
 
@@ -118,6 +134,15 @@ class TestWarnings(unittest.TestCase):
         tree = command.apply(tree)
 
         expectedCode = self.get_ast_from_file('extra-test-code/expectedSimplifiedIf.py')
+
+        print("TEST MINUS EQUAL REWRITER")
+        print("_------------------------------------------------------")
+        # print(dump(tree, indent=4))
+        print(unparse(tree))
+        print("_------------------------------------------------------")
+        # print(dump(expectedCode, indent=4))
+        print(unparse(expectedCode))
+        print("_------------------------------------------------------")
         
         self.assertEqual(dump(tree), dump(expectedCode))
 
