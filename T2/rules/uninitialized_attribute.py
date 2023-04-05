@@ -17,9 +17,9 @@ class AttributeUsageVisitor(WarningNodeVisitor):
         self.currentClass = None
         self.initialized = []
 
-    def visit_Assign(self, node: Assign):
+    def visit_Assign(self, node: Assign): #recorrer los argumentos de la funcion
         if self.currentClass != None:
-            if isinstance(node.targets[0], Attribute):
+            if isinstance(node.targets[0], Attribute): #si el target es un atributo
                 self.initialized.append(node.targets[0].attr)
             NodeVisitor.generic_visit(self, node)
     

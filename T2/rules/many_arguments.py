@@ -12,9 +12,9 @@ class ManyArgumentsVisitor(WarningNodeVisitor):
         self.threshold = 6
 
     def visit_ClassDef(self, node: ClassDef):
-        self.currentClass = node.name
-        NodeVisitor.generic_visit(self, node)
-        self.currentClass = None
+        self.currentClass = node.name # Guardar el nombre de la clase actual
+        NodeVisitor.generic_visit(self, node) # Visitar los nodos hijos
+        self.currentClass = None # Restaurar el valor de currentClass
 
     def visit_FunctionDef(self, node: FunctionDef):
         # Si esta definido dentro de un clase, asumir que uno de los argumentos sera self
