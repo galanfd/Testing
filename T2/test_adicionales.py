@@ -122,8 +122,11 @@ class TestWarnings(unittest.TestCase):
     """ Nombre: test_simplified_if
         Codigo a ser analizado: extra-test-code/simplifiedIf.py
         Descripcion: Test para evaluar SimplifiedIfRewriterCommand considerando los siguientes escenarios:
-        - Linea <numero-linea> : <Descripcion de codigo - caso a considerar>
-        
+        - Linea 2: Uso de If cuando tiene un else y el if.test es negado
+        - Linea 5: Uso de If que retorna Falso cuando es verdadero y el if.test es negado (debiendo generar doble negacion)
+        - Linea 8: Uso de If cuando expresion es booleana (La reconoce como booleana) 
+
+
         Resultado esperado: extra-test-code/expectedSimplifiedIf.py
     """
 

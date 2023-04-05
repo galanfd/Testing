@@ -1,2 +1,8 @@
 def divide_or_return_zero(x, y):    
-    return y != 0
+    return not y == 0
+
+def start(start):
+    return not not start > 4
+
+def boolvar(booleano):
+    return booleano 
