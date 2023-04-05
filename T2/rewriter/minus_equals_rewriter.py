@@ -2,7 +2,8 @@ from .rewriter import *
 
 class MinusEqualsTransformer(NodeTransformer):
     def visit_Assign(self, node: Assign):
-        new_node = AugAssign(op=Sub(), target=node.targets)
+        new_node = AugAssign(op=Sub(), target=node.targets[0], value=BinOp(left=node.targets[0], op=Sub(), right=node.value))
+        # new_node = AugAssign(op=Sub(), target=node.targets)
         var = node.targets[0]
 
         if isinstance(var, Name) and isinstance(node.value, BinOp):

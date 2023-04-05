@@ -1,20 +1,18 @@
 from .rewriter import *
 
 class SimplifiedIfTransformer(NodeTransformer):
-    def visit_If(self, node: If):
-        new_node = If(test=node.test, body=node.body, orelse=node.orelse)
-        if isinstance(node.test, Compare):
-            if isinstance(node.test.left, Name) and isinstance(node.test.comparators[0], Name):
-                if node.test.ops[0] == Eq():
-                    if isinstance(node.body[0], Assign):
-                        if isinstance(node.body[0].value, Name):
-                            if node.body[0].value.id == node.test.left.id:
-                                new_node.test = node.test.left
-                                return new_node
-                            elif node.body[0].value.id == node.test.comparators[0].id:
-                                new_node.test = UnaryOp(op=Not(), operand=node.test.left)
-                                return new_node
+    def visit_Return(self, node):
+        if isinstance(node.value, IfExp):
+            if isinstance(node.value.body, NameConstant) and isinstance(node.value.orelse, NameConstant):
+                if node.value.body.value is True and node.value.orelse.value is False:
+                    return Return(value=node.value.test)
+                elif node.value.body.value is False and node.value.orelse.value is True:
+                    new_node = UnaryOp(op=Not(), operand=node.value.test)
+                    return Return(value=new_node)
         return node
+
+
+
 
 
 class SimplifiedIfRewriterCommand(RewriterCommand):
