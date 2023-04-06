@@ -96,7 +96,9 @@ class TestWarnings(unittest.TestCase):
         result = superInitRule.analyze(tree)
 
         # Actualice el valor de expectedWarnings de acuerdo a su caso de prueba propuesto
-        expectedWarnings = []
+        expectedWarnings = [
+            Warning('SuperInitNotCalled', 22, 'subclass FlyingSquirrel does not call to super().__init__()')
+        ]
 
         self.assertEqual(result, expectedWarnings)
 
@@ -104,7 +106,8 @@ class TestWarnings(unittest.TestCase):
     """ Nombre: test_minus_equal_rewriter
         Codigo a ser analizado: extra-test-code/minusEquals.py
         Descripcion: Test para evaluar transformador MinusEqualsRewriterCommand considerando los siguientes escenarios:
-        - Linea <numero-linea> : <Descripcion de codigo - caso a considerar>
+        - Linea 2 : a = b - 5 : no deberia ser transformado
+        - Linea 6: x = x - (y + 1) : deberia ser transformado a x -= (y + 1)
         
         Resultado esperado: extra-test-code/expectedMinusEquals.py
     """
@@ -116,6 +119,16 @@ class TestWarnings(unittest.TestCase):
         tree = command.apply(tree)
 
         expectedCode = self.get_ast_from_file('extra-test-code/expectedMinusEquals.py')
+
+        # print("TEST MINUS EQUAL REWRITER")
+        # print("_------------------------------------------------------")
+        # # print(dump(tree, indent=4))
+        # print(unparse(tree))
+        # print("_------------------------------------------------------")
+        # # print(dump(expectedCode, indent=4))
+        # print(unparse(expectedCode))
+        # print("_------------------------------------------------------")
+
         self.assertEqual(dump(tree), dump(expectedCode))
 
 
@@ -138,14 +151,14 @@ class TestWarnings(unittest.TestCase):
 
         expectedCode = self.get_ast_from_file('extra-test-code/expectedSimplifiedIf.py')
 
-        print("TEST MINUS EQUAL REWRITER")
-        print("_------------------------------------------------------")
-        # print(dump(tree, indent=4))
-        print(unparse(tree))
-        print("_------------------------------------------------------")
-        # print(dump(expectedCode, indent=4))
-        print(unparse(expectedCode))
-        print("_------------------------------------------------------")
+        # print("TEST MINUS EQUAL REWRITER")
+        # print("_------------------------------------------------------")
+        # # print(dump(tree, indent=4))
+        # print(unparse(tree))
+        # print("_------------------------------------------------------")
+        # # print(dump(expectedCode, indent=4))
+        # print(unparse(expectedCode))
+        # print("_------------------------------------------------------")
         
         self.assertEqual(dump(tree), dump(expectedCode))
 
