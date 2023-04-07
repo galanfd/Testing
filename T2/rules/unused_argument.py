@@ -24,6 +24,7 @@ class UnusedArgVisitor(WarningNodeVisitor):
             self.current_param = arg_name
             NodeVisitor.generic_visit(self, node)
             if arg_name not in self.used_args:
+                print(f"Unused Argument {node.lineno} argument {arg_name} not used")
                 self.addWarning('UnusedArgument', node.lineno, f"argument {arg_name} is not used")
         self.current_param = None
         self.used_args = set()

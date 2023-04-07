@@ -76,7 +76,9 @@ class TestWarnings(unittest.TestCase):
         result = unusedArgRule.analyze(tree)
 
         # Actualice el valor de expectedWarnings de acuerdo a su caso de prueba propuesto
-        expectedWarnings = []
+        expectedWarnings = [
+        Warning('UnusedArgument', 13, 'argument z is not used'),
+        Warning('UnusedArgument', 16, 'argument x is not used')]
 
         self.assertEqual(result, expectedWarnings)
 
