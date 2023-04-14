@@ -28,7 +28,7 @@ class ClassInstrumentor(NodeTransformer):
     def visit_FunctionDef(self, node: FunctionDef):
         if self.current_class != None:
             transformedNode = NodeTransformer.generic_visit(self, node)
-            injectedCode = parse('FunctionProfiler.record(\''+
+            injectedCode = parse('ClassProfiler.record(\''+
             transformedNode.name+"'" +', '+str(transformedNode.lineno)+', '+self.current_class+')')
         
             if isinstance(transformedNode.body, list):
@@ -39,6 +39,8 @@ class ClassInstrumentor(NodeTransformer):
             fix_missing_locations(transformedNode)
             
             return transformedNode
+        else:
+            return NodeTransformer.generic_visit(self, node)
 
 
 class ClassProfiler(Profiler):
@@ -54,7 +56,9 @@ class ClassProfiler(Profiler):
         cls.getInstance().ins_record(functionName, line, class_name)
 
     def ins_record(self, functionName, line, class_name):  
-        self.class_methods.append((functionName, line, class_name))
+        if (functionName, line, class_name) not in self.class_methods:
+            print((functionName, line, class_name))
+            self.class_methods.append((functionName, line, class_name))
     
     def report_executed_methods(self):
         #Funcion que retorna una lista con los metodos ejecutados
