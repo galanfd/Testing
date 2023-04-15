@@ -1,5 +1,6 @@
 from ast import *
 import os
+import inspect
 from profiler import Profiler
 import re
 
@@ -9,6 +10,7 @@ class ClassInstrumentor(NodeTransformer):
     def __init__(self):
         super().__init__()
         self.current_class = None
+        self.current_function = None
         self.called_functions = []
     
     def visit_ClassDef(self, node: ClassDef):
@@ -34,6 +36,8 @@ class ClassInstrumentor(NodeTransformer):
             transformedNode = NodeTransformer.generic_visit(self, node)
             injectedCode = parse('ClassProfiler.record(\''+
             transformedNode.name+"'" +', '+str(transformedNode.lineno)+', '+"'"+self.current_class+"'"+')')
+            injectedCode = parse('ClassProfiler.record_caller(\''+
+            transformedNode.name+"'" +', '+str(transformedNode.lineno)+', '+"'"+self.current_class+"'"+')')
         
             if isinstance(transformedNode.body, list):
                 transformedNode.body.insert(0, injectedCode.body[0])
@@ -43,19 +47,12 @@ class ClassInstrumentor(NodeTransformer):
             fix_missing_locations(transformedNode)
             
             return transformedNode
+        
         else:
+            self.current_function = node.name
             transformedNode = NodeTransformer.generic_visit(self, node)
-            
-            injectedCode = parse('ClassProfiler.record_calls(\''+
-            transformedNode.name+"'" +', '+str(self.called_functions)+')')
-            self.called_functions = []
-            if isinstance(transformedNode.body, list):
-                transformedNode.body.insert(0, injectedCode.body[0])
-            else:
-                transformedNode.body = [injectedCode.body[0], node.body]
-
-            fix_missing_locations(transformedNode)
-            return NodeTransformer.generic_visit(self, node)
+            self.current_function = None
+            return transformedNode
 
 
 
@@ -63,7 +60,7 @@ class ClassInstrumentor(NodeTransformer):
     #     if isinstance(node.func, Name):
     #         function_name = node.func.id
     #         self.called_functions.append((function_name, node.lineno))
-    #     elif isinstance(node.func, Attribute):
+    #     elif isinstance(node.func, Attribute) and node.func.value.id != "assert":
     #         function_name = node.func.attr
     #         self.called_functions.append((function_name, node.lineno))
     #     self.generic_visit(node)
@@ -77,6 +74,7 @@ class ClassProfiler(Profiler):
         self.class_name = None
         self.class_methods = []
         self.class_methods_executed = []
+        self.caller_records = {}
 
     @classmethod
     def record(cls, functionName, line, class_name):
@@ -88,13 +86,20 @@ class ClassProfiler(Profiler):
             self.class_methods.append((functionName, line, class_name))
 
     @classmethod
-    def record_calls(cls, method_name, calls):
-        cls.getInstance().ins_record_calls(method_name, calls)
+    def record_caller(cls, method_name, line, class_name):
+        caller_name = inspect.stack()[2][3]
+        cls.getInstance().ins_record_calls(method_name, line, class_name, caller_name)
 
-    def ins_record_calls(self, method_name, calls):
-        print((method_name, calls))
-        if (method_name, calls) not in self.class_methods_executed:
-            self.class_methods_executed.append((method_name, calls))
+    def ins_record_calls(self, method_name, line, class_name, caller_name):
+        #print((method_name, line, class_name, caller_name))
+        #key = (method_name, line, class_name)
+        key = caller_name
+        if key not in self.caller_records:
+            self.caller_records[key] = []
+        if (method_name, line, class_name) not in self.caller_records[key]:
+            self.caller_records[key].append((method_name, line, class_name))
+        # if (method_name, calls) not in self.class_methods_executed:
+        #     self.class_methods_executed.append((method_name, calls))
 
     def report_executed_methods(self):
         #Funcion que retorna una lista con los metodos ejecutados
@@ -102,7 +107,7 @@ class ClassProfiler(Profiler):
     
     def report_executed_by(self, method_name):
         #Funcion que retorna una lista con los metodos ejecutados por un metodo en particular
-        return self.class_methods_executed
+        return sort_list(self.caller_records[method_name])
 
 def sort_list(list):
     sorted_tuples = sorted(list, key=lambda x: x[1])
