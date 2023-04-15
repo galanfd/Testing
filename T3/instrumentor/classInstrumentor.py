@@ -36,13 +36,15 @@ class ClassInstrumentor(NodeTransformer):
             transformedNode = NodeTransformer.generic_visit(self, node)
             injectedCode = parse('ClassProfiler.record(\''+
             transformedNode.name+"'" +', '+str(transformedNode.lineno)+', '+"'"+self.current_class+"'"+')')
-            injectedCode = parse('ClassProfiler.record_caller(\''+
+            injectedCode2 = parse('ClassProfiler.record_caller(\''+
             transformedNode.name+"'" +', '+str(transformedNode.lineno)+', '+"'"+self.current_class+"'"+')')
         
             if isinstance(transformedNode.body, list):
                 transformedNode.body.insert(0, injectedCode.body[0])
+                transformedNode.body.insert(0, injectedCode2.body[0])
             else:
                 transformedNode.body = [injectedCode.body[0], node.body]
+                transformedNode.body = [injectedCode2.body[0], node.body]
 
             fix_missing_locations(transformedNode)
             

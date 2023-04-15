@@ -4,27 +4,33 @@ class Rectangle:
 
     def __init__(self, width, height):
         ClassProfiler.record_caller('__init__', 3, 'Rectangle')
+        ClassProfiler.record('__init__', 3, 'Rectangle')
         self.width = width
         self.height = height
 
     def get_area(self):
         ClassProfiler.record_caller('get_area', 7, 'Rectangle')
+        ClassProfiler.record('get_area', 7, 'Rectangle')
         return self.width * self.height
 
     def get_perimeter(self):
         ClassProfiler.record_caller('get_perimeter', 10, 'Rectangle')
+        ClassProfiler.record('get_perimeter', 10, 'Rectangle')
         return self.width * 2 + self.height * 2
 
     def set_width(self, width):
         ClassProfiler.record_caller('set_width', 13, 'Rectangle')
+        ClassProfiler.record('set_width', 13, 'Rectangle')
         self.width = width
 
     def set_height(self, height):
         ClassProfiler.record_caller('set_height', 16, 'Rectangle')
+        ClassProfiler.record('set_height', 16, 'Rectangle')
         self.height = height
 
     def __eq__(self, other):
         ClassProfiler.record_caller('__eq__', 19, 'Rectangle')
+        ClassProfiler.record('__eq__', 19, 'Rectangle')
         return self.width == other.width and self.height == other.height
 
 def test_area():
