@@ -15,6 +15,7 @@ class CoverageTracer(StackInspector):
     def __init__(self):
         # super().__init__(None, self.traceit)
         self.executed_lines = set()
+        self.count_lines = []
 
     def traceit(self, frame, event, arg):
         if self.our_frame(frame) or self.problematic_frame(frame):
@@ -26,6 +27,7 @@ class CoverageTracer(StackInspector):
 
     def log(self, *objects, sep: str = ' ', end: str = '\n', flush=True):
         if objects[0] == 'line':
+            self.count_lines.append((objects[2], objects[1]))
             if (objects[1], objects[2]) not in self.executed_lines:
                 self.executed_lines.add((objects[2], objects[1]))
                 # print((objects[0], objects[1], objects[2]))
@@ -50,3 +52,22 @@ class CoverageTracer(StackInspector):
         
     def report_executed_lines(self):
         return sorted(self.executed_lines)
+    
+    def report_execution_count(self):
+        # print(self.count_lines)
+        return sorted(self.count_occurrences(sorted(self.count_lines)))
+    
+    def count_occurrences(self, lst):
+        count_dict = {}
+        for tup in lst:
+            if tup[1] not in count_dict:
+                count_dict[tup[1]] = 1
+            else:
+                count_dict[tup[1]] += 1
+        
+        result = []
+        for tup in set(lst):
+            count = count_dict[tup[1]]
+            result.append((*tup, count))
+        
+        return result
