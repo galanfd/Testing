@@ -9,7 +9,7 @@ bin-release/
 
 _pycache_/
 
-
+.DS_Store
 
 # Executables
 *.swf
