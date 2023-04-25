@@ -18,5 +18,9 @@ class TestClockFactory(unittest.TestCase):
         clock_display = clock_factory.create("hh:mm:ss:mmmm")
         self.assertEqual(clock_display.str(), "00:00:00:00")
 
+    def test_returnNone(self):
+        clock_factory = ClockFactory()
+        self.assertIsNone(clock_factory.__init__())
+
 # if __name__ == '__main__':
 #     unittest.main()

@@ -37,3 +37,30 @@ class TestClockDisplay(unittest.TestCase):
         clock_display = ClockDisplay([23, 60])
         clock_display.increment()
         self.assertTrue(clock_display.invariant(), False)
+
+    def test_increment_resetminute(self):
+        clock_display = ClockDisplay([24, 60])
+        for i in range(60):
+            clock_display.increment()
+        self.assertEqual(clock_display.numbers[1].value, 0)
+
+    def test_increment_resethour(self):
+        clock_display = ClockDisplay([24, 60])
+        for i in range(1440):
+            clock_display.increment()
+        self.assertEqual(clock_display.numbers[0].value, 0)
+
+    def test_hour_still(self):
+        clock_display = ClockDisplay([24,60])
+        clock_display.increment()
+        self.assertEqual(clock_display.numbers[0].value, 0)
+    
+    def test_hour_plus(self):
+        clock_display = ClockDisplay([24, 60])
+        for i in range(60):
+            clock_display.increment()
+        self.assertEqual(clock_display.numbers[0].value, 1)
+
+    def test_returnNone(self):
+        clock_display = ClockDisplay([10, 20])
+        self.assertIsNone(clock_display.__init__([10, 20]))
