@@ -50,4 +50,13 @@ class TestNumberDisplay(unittest.TestCase):
 
     def test_returnNone(self):
         number_display = NumberDisplay(10, 20)
-        self.assertIsNone(number_display.__init__(10, 20))
+        result = number_display.__init__(10, 20)
+        self.assertIsNone(result)
+
+    def test_modreplace(self):
+        number_display = NumberDisplay(59, 60)
+        ret = number_display.increase()
+        # print(50%60)
+        self.assertTrue(ret)
+
+
